@@ -16,6 +16,14 @@ def load():
     except FileNotFoundError:
         print("Index file not found. You must run 'build' command first.")
 
+def print_index(word):
+    word = word.lower() 
+
+    if word in inverted_index: 
+        print(f"{word}: {inverted_index[word]}") 
+    else:
+        print(f"Word '{word}' can not be found in the index.") 
+
 #----------------------------------
 
 def main():
@@ -32,13 +40,19 @@ def main():
             build()
         elif command == "load":
             load() 
-        # elif command == "print":
-        #     print()
+        elif command == "print":
+            if len(args) < 1:
+                print("⛔️ Usage: find <words>")
+            else:
+                if inverted_index == {}:
+                    print("Index is empyty. Please load the index from the file system. Usage: 'load'.")
+                else:
+                    print_index(args[0])
         # elif command == "find":
         #     if len(args) < 2:
         #         print("⛔️ Usage: find <words>")
         #     else:
-        #         find(args[0], args[k]) 
+        #         find(args) 
         elif command == "exit":
             print("Exiting the application... Bye!")
             break 
