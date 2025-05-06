@@ -1,27 +1,37 @@
+import json
 from crawler import *
+
+inverted_index = {}
 
 def build():
     quotes_hashmap = fetch_quotes()
     build_inverted_index(quotes_hashmap)
 
+def load():
+    global inverted_index
+    try:
+        with open("inverted_index.json", "r") as f:
+            inverted_index = json.load(f)
+        print("Inverted index loaded successfully.")
+    except FileNotFoundError:
+        print("Index file not found. You must run 'build' command first.")
+
 #----------------------------------
 
-def main(): 
+def main():
     print("--- Welcome to CW2 Search Tool ---")
     print("Type 'exit' to quit")
  
     while True:
-        # command_input = input("> ").strip()
-        command_input = "build"
+        command_input = input("> ").strip()
         command_parts = command_input.split(" ")
         command = command_parts[0].lower()
         args=command_parts[1:] #gets args (i.e. input after 'command' word)
         
         if command == "build":
             build()
-            break
-        # elif command == "load":
-        #     load() 
+        elif command == "load":
+            load() 
         # elif command == "print":
         #     print()
         # elif command == "find":
