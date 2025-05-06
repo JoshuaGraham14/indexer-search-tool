@@ -1,8 +1,8 @@
 from crawler import *
 
 def build():
-    quotes = fetch_quotes()
-    print(quotes)
+    quotes_hashmap = fetch_quotes()
+    build_inverted_index(quotes_hashmap)
 
 #----------------------------------
 
@@ -11,13 +11,15 @@ def main():
     print("Type 'exit' to quit")
  
     while True:
-        command_input = input("> ").strip()
+        # command_input = input("> ").strip()
+        command_input = "build"
         command_parts = command_input.split(" ")
         command = command_parts[0].lower()
         args=command_parts[1:] #gets args (i.e. input after 'command' word)
-
+        
         if command == "build":
             build()
+            break
         # elif command == "load":
         #     load() 
         # elif command == "print":
