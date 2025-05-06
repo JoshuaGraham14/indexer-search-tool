@@ -4,8 +4,8 @@ from crawler import *
 inverted_index = {}
 
 def build():
-    quotes_hashmap = fetch_quotes()
-    build_inverted_index(quotes_hashmap)
+    pages_content_dict = crawl_pages()
+    build_inverted_index(pages_content_dict)
 
 def load():
     global inverted_index
@@ -17,12 +17,25 @@ def load():
         print("Index file not found. You must run 'build' command first.")
 
 def print_index(word):
+    if not inverted_index:
+        print("Index is empyty. Please load the index from the file system. Usage: 'load'.")
+        return
+    
     word = word.lower() 
 
-    if word in inverted_index: 
-        print(f"{word}: {inverted_index[word]}") 
-    else:
-        print(f"Word '{word}' can not be found in the index.") 
+    if word not in inverted_index:
+        print(f"Word '{word}' can not be found in the index.")
+        return
+
+    print(f"\nPrinting inverted index for '{word}'...")
+    print("-" * 140)
+    print(f"{'URL':<80} | {'Count':<10} | Positions")
+    print("-" * 140)
+
+    for url, positions in inverted_index[word].items():
+        print(f"{url:<80} | {len(positions):<10} | {positions}")
+    
+    print("-" * 140)
 
 #----------------------------------
 
@@ -44,12 +57,9 @@ def main():
             if len(args) < 1:
                 print("⛔️ Usage: find <words>")
             else:
-                if inverted_index == {}:
-                    print("Index is empyty. Please load the index from the file system. Usage: 'load'.")
-                else:
-                    print_index(args[0])
+                print_index(args[0])
         # elif command == "find":
-        #     if len(args) < 2:
+        #     if len(args) < 1:
         #         print("⛔️ Usage: find <words>")
         #     else:
         #         find(args) 
